@@ -1,0 +1,143 @@
+#lang scheme
+(define LOCATIONS '( 
+(venice 150 (milan bologna florence) (concert opera festival))
+(milan 130 (venice bologna florence turin bern) (fashion concert))
+(florence 130 (milan bologna venice) (concert opera festival)) 
+(bologna 100 (milan florence) (concert festival)) 
+(bern 150 (milan zurich) (concert festival theatre science)) 
+(zurich 170 (bern munich) (concert theatre)) 
+(munich 170 (zurich stuttgart frankfurt salzburg vienna) (concert festival)) 
+(stuttgart 130 (munich frankfurt) (concert opera)) 
+(frankfurt 130 (stuttgart frankfurt) (concert theatre)) 
+(salzburg 130 (munich vienna) (concert opera theatre)) 
+(vienna 170 (munich salzburg) (concert opera theatre)) 
+(nice 150 (cannes monaco) (opera theatre)) 
+(cannes 170 (nice monaco) (festival theatre)) 
+(monaco 170 (nice cannes) (casino concert)) 
+(barcelona 130 (zaragoza mallorca ibiza) (casino concert theatre football)) 
+(zaragoza 90 (barcelona madrid) (football)) 
+(madrid 100 (zaragoza valencia) (theatre concert)) 
+(valencia 90 (madrid mallorca) (casino concert)) 
+(mallorca 170 (valencia barcelona ibiza) (festival concert)) 
+(ibiza 170 (mallorca barcelona) (concert festival)) )) 
+
+(define TRAVELERS '( 
+(hans (madrid valencia) (theatre concert opera) frankfurt) 
+(sergio (barcelona milan bologna) (theatre opera) florence) 
+(john (milan barcelona valencia cannes zaragoza) (football concert fashion) monaco) 
+(sisi (madrid munich bern) (concert opera science) vienna) 
+(salma (venice bologna barcelona madrid) (theatre festival) mallorca) 
+(messi (ibiza florence nice vienna milan venice) (concert festival) barcelona) 
+(ronaldo (mallorca ibiza cannes nice) (concert opera) madrid) 
+(medici (madrid zurich) (opera) florence) 
+(james (barcelona florence bologna) (concert opera football) venice) 
+(kate (nice bern ibiza zaragoza) (football festival science) milan) 
+(hagrid (mallorca zaragoza ibiza milan) (football fashion theatre) bologna) 
+(harry (valencia cannes florence) (football concert fashion) bern) 
+(dumbledore (milan bern) (science fashion) zurich) 
+(hermione (salzburg barcelona florence cannes) (football theatre festival) munich) 
+(ron (milan cannes salzburg) (theatre fashion) stuttgart) 
+(dolores (milan cannes vienna) (festival concert) salzburg) 
+(maeve (bern monaco ibiza vienna) (opera concert science) nice) 
+(cercei (vienna barcelona valencia mallorca bologna) (football opera) cannes) 
+(arya (mallorca ibiza frankfurt munich bologna madrid) (opera concert) zaragoza) 
+(sansa (milan barcelona valencia cannes zaragoza) (football concert fashion) valencia) )) 
+
+
+
+
+ 
+
+(define (find-connection city list) 
+(cond
+((equal? city (car (car list) ) )   
+(car (cdr (cdr (car list) ) ) ) )
+( else
+  (if (eqv? (length list) 1) '()
+(find-connection city (cdr list))  ) ) 
+)
+)
+  
+(define (RAILWAY-CONNECTION city) (find-connection city LOCATIONS))
+
+
+(define (find-cost city list) 
+(cond
+((equal? city (car (car list) ) )   
+(car (cdr (car list) ) ) )
+( else
+  (if (eqv? (length list) 1) '()
+(find-cost city (cdr list))  ) ) 
+)
+)
+
+(define (ACCOMMODATION-COST city) (find-cost city LOCATIONS))
+
+(define (find-interested person list) 
+(cond
+((equal? person (car (car list) ) )   
+(car (cdr (car list) ) ) )
+( else
+  (if (eqv? (length list) 1) '()
+(find-interested person (cdr list))  ) ) 
+)
+)
+
+(define (INTERESTED-CITIES person) (find-interested person TRAVELERS))
+
+(define (find-activity person list) 
+(cond
+((equal? person (car (car list) ) )   
+(car (cdr (cdr (car list) ) ) ) )
+( else
+  (if (eqv? (length list) 1) '()
+(find-activity person (cdr list))  ) ) 
+)
+)
+
+(define (INTERESTED-ACTIVITIES person) (find-activity person TRAVELERS))
+
+(define (find-home person list) 
+(cond
+((equal? person (car (car list) ) )   
+(car (cdr (cdr (cdr (car list) ) ) ) ) )
+( else
+  (if (eqv? (length list) 1) '()
+(find-home person (cdr list))  ) ) 
+)
+)
+
+(define (HOME person) (find-home person TRAVELERS))
+
+
+
+(define (find-traveler-at-location location list) (filter (lambda (x) (equal? location (car(cdr(cdr(cdr x)))))) list))
+
+(define (TRAVELER-FROM location) (map (lambda (name) (car name)) (find-traveler-at-location location TRAVELERS)))
+
+(define (find-traveler-interested location list) (filter (lambda (x) (member location (car(cdr x)))) list))
+
+(define (INTERESTED-IN-CITY location) (map (lambda (name) (car name)) (find-traveler-interested location TRAVELERS)))
+
+(define (find-traveler-activity activity list) (filter (lambda (city) (member activity (car(cdr(cdr city))))) list))
+
+(define (INTERESTED-IN-ACTIVITY activity) (map (lambda (name) (car name)) (find-traveler-activity activity TRAVELERS)))
+
+(define cities '())
+
+(define (network-finder list) 
+  (append cities list)
+  (RAILWAY-CONNECTION location)
+  (if (equal? length(
+  ) 
+
+(define (RAILWAY-NETWORK city) (network-finder (RAILWAY-CONNECTION city))) 
+
+;(INTERESTED-IN-ACTIVITY 'football)
+;(INTERESTED-IN-CITY 'milan)
+;(TRAVELER-FROM 'madrid)
+;(HOME 'messi)
+;(INTERESTED-ACTIVITIES 'sansa)
+;(INTERESTED-CITIES 'ronaldo)
+;(ACCOMMODATION-COST 'ibiza)
+;(RAILWAY-CONNECTION 'ibiza)
